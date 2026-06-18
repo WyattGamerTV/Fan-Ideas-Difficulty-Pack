@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.25)
 
-project(FanIdeasDifficultyPack)
-
 find_package(Geode REQUIRED)
+
+project(FanIdeasDifficultyPack)
 
 add_geode_mod(
     wyattgamertv.fan_ideas_difficulties
