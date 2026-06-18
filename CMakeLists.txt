@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.25)
 
-include($ENV{GEODE_SDK}/cmake/GeodeMod.cmake)
+set(Geode_DIR $ENV{GEODE_SDK})
+find_package(Geode REQUIRED)
 
 project(FanIdeasDifficultyPack)
 
