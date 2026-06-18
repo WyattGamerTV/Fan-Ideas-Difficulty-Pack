@@ -1,8 +1,9 @@
 cmake_minimum_required(VERSION 3.25)
 
-project(FanIdeasDifficultyPack)
+set(Geode_DIR "$ENV{GEODE_SDK}/loader")
+find_package(Geode REQUIRED)
 
-add_subdirectory($ENV{GEODE_SDK} ${CMAKE_CURRENT_BINARY_DIR}/geode)
+project(FanIdeasDifficultyPack)
 
 add_geode_mod(
     wyattgamertv.fan_ideas_difficulties
