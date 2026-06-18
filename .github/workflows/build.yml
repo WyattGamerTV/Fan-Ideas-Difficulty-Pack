@@ -14,7 +14,7 @@ jobs:
         config:
           - name: Windows
             os: windows-latest
-            target: Win32
+            target: Win64
           - name: Android64
             os: ubuntu-latest
             target: Android64
@@ -26,16 +26,10 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Setup Geode SDK
-        uses: geode-sdk/setup-action@main
-
-      - name: Configure CMake
-        run: |
-          cmake -B build -DCMAKE_BUILD_TYPE=Release -DGEODE_TARGET=${{ matrix.config.target }} -DGeode_DIR="${{ env.GEODE_SDK }}"
-
       - name: Build Mod
-        run: |
-          cmake --build build --config Release
+        uses: geode-sdk/build-geode-mod@main
+        with:
+          target: ${{ matrix.config.target }}
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
