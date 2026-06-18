@@ -9,20 +9,10 @@ class $modify(MyDifficultySprite, GJDifficultySprite) {
     void updateFeatureSprite(int difficultyID) {
         GJDifficultySprite::updateFeatureSprite(difficultyID);
 
-        if (difficultyID == 11) {
-            auto mySpriteFrame = CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("difficulty_casual.png");
-            if (mySpriteFrame) {
-                this->setDisplayFrame(mySpriteFrame);
-            }
-        }
-        else if (difficultyID == 12) {
-            auto mySpriteFrame = CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("difficulty_grandmaster.png");
-            if (mySpriteFrame) {
-                this->setDisplayFrame(mySpriteFrame);
-            }
-        }
-        else if (difficultyID == 99) {
-            auto mySpriteFrame = CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("difficulty_god.png");
+        if (difficultyID >= 11) {
+            std::string frameName = "difficulty_" + std::to_string(difficultyID) + ".png";
+            auto mySpriteFrame = CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(frameName.c_str());
+            
             if (mySpriteFrame) {
                 this->setDisplayFrame(mySpriteFrame);
             }
@@ -37,10 +27,17 @@ class $modify(MyGameLevel, GJGameLevel) {
         if (this->m_creatorName == "WyattGamerTV") {
             std::string desc = this->m_levelDesc;
 
-            if (desc.find("[GOD]") != std::string::npos) {
-                this->m_ratings = 99;
-                this->m_isDemon = true;
-                this->m_isEpic = true;
+            size_t pos = desc.find("[DIFF ");
+            if (pos != std::string::npos) {
+                size_t endPos = desc.find("]", pos);
+                if (endPos != std::string::npos) {
+                    std::string idStr = desc.substr(pos + 6, endPos - (pos + 6));
+                    try {
+                        int customID = std::stoi(idStr);
+                        this->m_ratings = customID;
+                        this->m_isDemon = true; 
+                    } catch (...) {}
+                }
             }
         }
         return true;
