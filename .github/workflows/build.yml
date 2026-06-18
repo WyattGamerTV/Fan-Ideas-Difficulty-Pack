@@ -2,7 +2,9 @@ name: Build Geode Mod
 
 on:
   push:
-    branches: ['**']
+    branches:
+      - main
+  pull_request:
 
 jobs:
   build:
@@ -10,19 +12,35 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - name: Android32
-            target: Android32
+          - name: Windows
+            os: windows-latest
+            target: Win32
           - name: Android64
+            os: ubuntu-latest
             target: Android64
 
     name: ${{ matrix.config.name }}
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.config.os }}
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Geode SDK
+        uses: geode-sdk/actions/setup@main
+        with:
+          version: v2.0.0-beta.4
+
+      - name: Configure CMake
+        run: |
+          cmake -B build -DCMAKE_BUILD_TYPE=Release -DGEODE_TARGET=${{ matrix.config.target }} -DGeode_DIR="${{ env.GEODE_SDK }}"
 
       - name: Build Mod
-        uses: geode-sdk/build-geode-mod@main
+        run: |
+          cmake --build build --config Release
+
+      - name: Upload Artifact
+        uses: actions/artifacts@v4
         with:
-          target: ${{ matrix.config.target }}
-          sdk: latest
+          name: ${{ matrix.config.name }}-build
+          path: build/*.geode
