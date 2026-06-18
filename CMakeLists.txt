@@ -2,7 +2,13 @@ cmake_minimum_required(VERSION 3.25)
 
 project(FanIdeasDifficultyPack)
 
-set(Geode_DIR "$ENV{GEODE_SDK}")
+include(FetchContent)
+FetchContent_Declare(
+    GeodeCMake
+    URL "https://github.com/geode-sdk/cmake/archive/main.zip"
+)
+FetchContent_MakeAvailable(GeodeCMake)
+
 find_package(Geode REQUIRED)
 
 add_geode_mod(
