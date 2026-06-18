@@ -1,9 +1,8 @@
 cmake_minimum_required(VERSION 3.25)
 
-if(DEFINED env{GEODE_SDK})
+
+if(DEFINED ENV{GEODE_SDK})
     list(APPEND CMAKE_PREFIX_PATH "$ENV{GEODE_SDK}")
-else()
-    list(APPEND CMAKE_PREFIX_PATH "${CMAKE_CURRENT_SOURCE_DIR}/geode-sdk-clone")
 endif()
 
 project(FanIdeasDifficultyPack)
